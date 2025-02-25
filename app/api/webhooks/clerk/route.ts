@@ -64,28 +64,24 @@ export async function POST(req: Request) {
     const user = {
       clerkId: id,
       email: email_addresses[0].email_address,
-      username: username || email_addresses[0].email_address.split('@')[0], // Fallback username
-      firstName: first_name || '',
-      lastName: last_name || '',
-      photo: image_url || 'https://utfs.io/f/0ddfbd26-a424-43a0-aaf3-c3ee1b5b662c_default-avatar.png', // Default avatar
+      username: username!,
+      firstName: first_name,
+      lastName: last_name,
+      photo: image_url,
     };
 
-    try {
-      const newUser = await createUser(user);
+    const newUser = await createUser(user);
 
-      if (newUser) {
-        await clerkClient.users.updateUserMetadata(id, {
-          publicMetadata: {
-            userId: newUser._id,
-          },
-        });
-      }
-
-      return NextResponse.json({ message: "OK", user: newUser });
-    } catch (error) {
-      console.error("Error creating user:", error);
-      return new Response("Error creating user", { status: 500 });
+    // Set public metadata
+    if (newUser) {
+      await clerkClient.users.updateUserMetadata(id, {
+        publicMetadata: {
+          userId: newUser._id,
+        },
+      });
     }
+
+    return NextResponse.json({ message: "OK", user: newUser });
   }
 
   // UPDATE
