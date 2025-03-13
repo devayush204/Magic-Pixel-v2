@@ -12,8 +12,8 @@ const IBMPlex = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "magic-pixel",
-  description: "AI-powered image generator",
+  title: "Magic Pixel - AI Image Generation Platform",
+  description: "Transform your ideas into stunning images with AI-powered generation tools",
 };
 
 export default function RootLayout({
